@@ -19,7 +19,7 @@ export const HeroSection = () => {
   const nameToType = "Amartuvshin";
   const [typedName, setTypedName] = useState("");
   const roles = [
-    "Computer Science Developer",
+    "Computer Science Student",
     "Full Stack Web Developer",
     "Mobile App Enthusiast",
     "Innovation Driven Programmer",
@@ -30,7 +30,6 @@ export const HeroSection = () => {
     setIsClient(true);
   }, []);
 
-  // Typing effect for the name
   useEffect(() => {
     if (typedName.length < nameToType.length) {
       const timeoutId = setTimeout(() => {
@@ -106,13 +105,14 @@ export const HeroSection = () => {
     }));
   }, [isClient]);
 
+  // Hide cursor on touch devices
+  const isTouchDevice = isClient && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
   if (!isClient) {
     return (
       <div className="relative min-h-screen bg-gray-900 text-white flex items-center justify-center overflow-hidden">
-        {/* Placeholder content that will be replaced when hydrated */}
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-            {/* Content will load here */}
           </div>
         </div>
       </div>
@@ -120,8 +120,8 @@ export const HeroSection = () => {
   }
 
   return (
-    <div className="relative min-h-screen bg-gray-900 text-white flex items-center justify-center overflow-hidden cursor-none">
-      {/* Animated Digital Rain Background */}
+    <div className="relative min-h-screen bg-gray-900 text-white flex items-center justify-center overflow-hidden pt-24 sm:pt-28 md:pt-32 lg:pt-20" 
+      style={{ cursor: isTouchDevice ? 'auto' : 'none' }}>
       <div className="absolute inset-0 overflow-hidden z-0">
         {backgroundChars.map((item) => (
           <motion.span
@@ -148,24 +148,23 @@ export const HeroSection = () => {
         ))}
       </div>
 
-      {/* Custom cursor */}
-      <motion.div
-        className="fixed top-0 left-0 w-6 h-6 rounded-full pointer-events-none z-50"
-        variants={cursorVariants}
-        animate={isHoveringButton ? "buttonHover" : "default"}
-      />
+      {!isTouchDevice && (
+        <motion.div
+          className="fixed top-0 left-0 w-6 h-6 rounded-full pointer-events-none z-50"
+          variants={cursorVariants}
+          animate={isHoveringButton ? "buttonHover" : "default"}
+        />
+      )}
 
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-          {/* Content Section */}
-          {/* Image Section */}
+      <div className="container mx-auto px-4 py-6 md:py-10">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="relative z-10 lg:w-1/2 flex justify-center"
+            className="relative z-10 w-full lg:w-1/2 flex justify-center order-2 lg:order-1 mt-8 lg:mt-0"
           >
-            <div className="relative w-74 h-[380px] md:w-80 md:h-96 lg:w-96 lg:h-[520px] rounded-sm overflow-hidden border-4 border-blue-500 shadow-lg shadow-blue-500/30">
+            <div className="relative w-64 h-[300px] sm:w-72 sm:h-[340px] md:w-80 md:h-[380px] lg:w-96 lg:h-[520px] rounded-sm overflow-hidden border-4 border-blue-500 shadow-lg shadow-blue-500/30">
               <Image
                 src="/Img/Profile.jpg"
                 alt="Amartuvshin"
@@ -180,15 +179,15 @@ export const HeroSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="relative z-10 lg:w-1/2"
+            className="relative z-10 w-full lg:w-1/2 order-1 lg:order-2 text-center lg:text-left"
           >
-            <motion.h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600 font-mono">
+            <motion.h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600 font-mono">
               {typedName}
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 1, 0] }}
                 transition={{ duration: 0.7, repeat: Infinity, ease: "linear" }}
-                className="inline-block w-1 h-12 md:h-16 ml-1 bg-blue-400"
+                className="inline-block w-1 h-8 sm:h-10 md:h-12 lg:h-16 ml-1 bg-blue-400"
                 style={{
                   visibility:
                     typedName.length === nameToType.length
@@ -198,7 +197,7 @@ export const HeroSection = () => {
               ></motion.span>
             </motion.h1>
 
-            <div className="text-xl md:text-2xl mb-10 h-16 relative text-gray-300 font-mono">
+            <div className="text-lg sm:text-xl md:text-2xl mb-6 md:mb-10 h-12 md:h-16 relative text-gray-300 font-mono">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentRoleIndex}
@@ -206,7 +205,7 @@ export const HeroSection = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.4 }}
-                  className="absolute inset-0 flex items-center justify-start"
+                  className="absolute inset-0 flex items-center justify-center lg:justify-start"
                 >
                   <span>{`> ${roles[currentRoleIndex]}`}</span>
                   <motion.span
@@ -218,7 +217,7 @@ export const HeroSection = () => {
                       ease: "linear",
                       delay: 0.2,
                     }}
-                    className="ml-2 w-0.5 h-6 bg-blue-400"
+                    className="ml-2 w-0.5 h-5 md:h-6 bg-blue-400"
                   ></motion.span>
                 </motion.div>
               </AnimatePresence>
@@ -228,9 +227,9 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="text-gray-400 mb-10 text-lg"
+              className="text-gray-400 mb-6 md:mb-10 text-base md:text-lg max-w-md mx-auto lg:mx-0"
             >
-              Computer Science Student at National University of Mongolia (NUM),
+              Computer Science Student at Mongolian University of Science and Technology (MUST),
               passionate about crafting innovative web and mobile applications
               that solve real-world problems.
             </motion.p>
@@ -239,11 +238,11 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
-              className="flex flex-wrap gap-4 mb-12"
+              className="flex flex-wrap gap-4 mb-8 md:mb-12 justify-center lg:justify-start"
             >
               <a
                 href="#projects"
-                className="relative bg-blue-500 text-gray-900 px-8 py-3 rounded-md hover:bg-blue-600 transition duration-300 group overflow-hidden text-lg font-semibold"
+                className="relative bg-blue-500 text-gray-900 px-6 sm:px-8 py-2.5 sm:py-3 rounded-md hover:bg-blue-600 transition duration-300 group overflow-hidden text-base sm:text-lg font-semibold"
                 onMouseEnter={() => setIsHoveringButton(true)}
                 onMouseLeave={() => setIsHoveringButton(false)}
               >
@@ -251,7 +250,7 @@ export const HeroSection = () => {
               </a>
               <a
                 href="#contact"
-                className="relative border border-blue-500 text-blue-500 px-8 py-3 rounded-md hover:bg-blue-500 hover:text-gray-900 transition duration-300 group overflow-hidden text-lg font-semibold"
+                className="relative border border-blue-500 text-blue-500 px-6 sm:px-8 py-2.5 sm:py-3 rounded-md hover:bg-blue-500 hover:text-gray-900 transition duration-300 group overflow-hidden text-base sm:text-lg font-semibold"
                 onMouseEnter={() => setIsHoveringButton(true)}
                 onMouseLeave={() => setIsHoveringButton(false)}
               >
@@ -263,7 +262,7 @@ export const HeroSection = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
-              className="flex space-x-6"
+              className="flex space-x-6 justify-center lg:justify-start"
             >
               {[
                 { href: "https://github.com/Amraaka", icon: FiGithub },
@@ -287,7 +286,7 @@ export const HeroSection = () => {
                   onMouseEnter={() => setIsHoveringButton(true)}
                   onMouseLeave={() => setIsHoveringButton(false)}
                 >
-                  <social.icon size={28} />
+                  <social.icon size={24} className="sm:text-2xl md:text-3xl" />
                 </motion.a>
               ))}
             </motion.div>
@@ -299,13 +298,13 @@ export const HeroSection = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="absolute bottom-8 left-0 right-0 flex justify-center"
+        className="absolute bottom-4 sm:bottom-8 left-0 right-0 flex justify-center"
       >
         <a href="#about" className="animate-bounce">
-          <div className="w-8 h-12 border-2 border-blue-500 rounded-full flex justify-center items-start pt-1">
+          <div className="w-6 h-10 sm:w-8 sm:h-12 border-2 border-blue-500 rounded-full flex justify-center items-start pt-1">
             <motion.span
-              className="w-1.5 h-1.5 bg-blue-500 rounded-full"
-              animate={{ y: [4, 16, 4] }}
+              className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-blue-500 rounded-full"
+              animate={{ y: [3, 14, 3] }}
               transition={{
                 duration: 1.5,
                 repeat: Infinity,

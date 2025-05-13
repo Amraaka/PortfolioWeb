@@ -83,7 +83,7 @@ export default function AboutSection() {
       icon: AcademicCapIcon,
       title: "Scholarly Foundation",
       description:
-        "Solid Computer Science grounding from Minia University of Science and Technology, specializing in modern software engineering principles.",
+        "Solid Computer Science grounding from Mongolian University of Science and Technology, specializing in modern software engineering principles.",
     },
     {
       icon: CpuChipIcon,
@@ -98,17 +98,12 @@ export default function AboutSection() {
     "TypeScript",
     "React | Next.js",
     "Node.js | Express",
-    "Python | Django",
     "RESTful APIs",
-    "GraphQL",
     "MongoDB | PostgreSQL",
-    "Docker | Kubernetes",
-    "AWS | GCP",
     "Git | CI/CD",
     "Agile Methodologies",
   ];
 
-  // Generate background characters - moved into useEffect to avoid hydration issues
   const [backgroundChars, setBackgroundChars] = useState([]);
   
   useEffect(() => {
@@ -124,7 +119,6 @@ export default function AboutSection() {
     setBackgroundChars(chars);
   }, []);
 
-  // Don't render animations until client-side to prevent hydration mismatch
   if (!mounted) {
     return (
       <section 
@@ -132,7 +126,6 @@ export default function AboutSection() {
         className="bg-gray-900 text-white py-20 md:py-28 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
       >
         <div className="max-w-6xl mx-auto relative z-10">
-          {/* Simple loading or static version */}
           <div className="text-center mb-16 md:mb-20">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-500 font-mono">
               About Me
@@ -193,7 +186,7 @@ export default function AboutSection() {
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             A dedicated Computer Science professional from{" "}
             <strong className="text-blue-400">
-              Minia University of Science and Technology (MUST)
+              Mongolian University of Science and Technology (MUST)
             </strong>
             , I specialize in architecting and deploying
             robust, scalable digital solutions. My passion lies in transforming
@@ -239,7 +232,7 @@ export default function AboutSection() {
               Education:
             </h4>
             <p className="text-gray-400">
-              B.Sc. Computer Science - Minia University of Science and
+              B.Sc. Computer Science - Mongolian University of Science and
               Technology (MUST)
             </p>
             <p className="text-xs text-gray-500 mt-1">

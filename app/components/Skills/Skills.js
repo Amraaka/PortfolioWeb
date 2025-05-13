@@ -36,8 +36,6 @@ export const SkillsSection = () => {
       skills: [
         { name: "Node.js", level: 85 },
         { name: "Express", level: 80 },
-        { name: "Python", level: 75 },
-        { name: "GraphQL", level: 70 },
         { name: "REST APIs", level: 85 },
       ],
       color: "from-purple-500 to-purple-700",
@@ -49,7 +47,6 @@ export const SkillsSection = () => {
         { name: "MongoDB", level: 80 },
         { name: "PostgreSQL", level: 70 },
         { name: "Mongoose", level: 75 },
-        { name: "Prisma", level: 65 },
         { name: "SQL", level: 75 },
       ],
       color: "from-green-500 to-green-700",
@@ -59,10 +56,7 @@ export const SkillsSection = () => {
       title: "Cloud & DevOps",
       skills: [
         { name: "AWS", level: 70 },
-        { name: "Docker", level: 75 },
         { name: "Git", level: 85 },
-        { name: "CI/CD", level: 65 },
-        { name: "Kubernetes", level: 60 },
       ],
       color: "from-red-500 to-red-700",
     },
@@ -72,9 +66,7 @@ export const SkillsSection = () => {
       skills: [
         { name: "VS Code", level: 90 },
         { name: "Figma", level: 75 },
-        { name: "Webpack", level: 70 },
         { name: "Postman", level: 80 },
-        { name: "Jira", level: 65 },
       ],
       color: "from-orange-500 to-orange-700",
     },

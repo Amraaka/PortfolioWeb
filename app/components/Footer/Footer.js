@@ -168,7 +168,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <MapPin size={18} className="text-blue-400 mt-1 mr-3" />
-                <span className="text-gray-400">Minia, Egypt</span>
+                <span className="text-gray-400">Mongolia, UB</span>
               </li>
               <li className="flex items-start">
                 <Mail size={18} className="text-blue-400 mt-1 mr-3" />
@@ -185,7 +185,7 @@ export default function Footer() {
                   href="tel:+201234567890"
                   className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
                 >
-                  +20 123 456 7890
+                  +976 96068185
                 </a>
               </li>
             </ul>
