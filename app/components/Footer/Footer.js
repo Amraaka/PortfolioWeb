@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -11,7 +12,35 @@ import {
   Instagram,
 } from "lucide-react";
 
-export const Footer = () => {
+export default function Footer() {
+  const [mounted, setMounted] = useState(false);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    setMounted(true);
+
+    // Set dimensions only after component is mounted
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+
+    // Add resize listener
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const socialLinks = [
     {
       icon: Github,
@@ -43,6 +72,24 @@ export const Footer = () => {
     { href: "#contact", label: "Contact" },
   ];
 
+  // Static footer content rendered during SSR
+  if (!mounted) {
+    return (
+      <footer className="bg-gray-900 text-white py-16 px-4 relative overflow-hidden">
+        <div className="max-w-6xl mx-auto relative z-10">
+          {/* Simple loading or static version */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <h3 className="text-2xl font-bold mb-4 text-blue-400">
+                Amara B.
+              </h3>
+            </div>
+          </div>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="bg-gray-900 text-white py-16 px-4 relative overflow-hidden">
       {/* Subtle Background Particles */}
@@ -52,8 +99,8 @@ export const Footer = () => {
             key={i}
             className="absolute rounded-full bg-blue-500 opacity-10"
             initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
+              x: Math.random() * dimensions.width,
+              y: Math.random() * dimensions.height,
               width: Math.random() * 15 + 5,
               height: Math.random() * 15 + 5,
             }}
@@ -71,98 +118,87 @@ export const Footer = () => {
         ))}
       </div>
 
+      {/* Footer Content */}
       <div className="max-w-6xl mx-auto relative z-10">
-        <div className="grid md:grid-cols-3 gap-12">
-          {/* About Column */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h3 className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600">
-              Amartuvshin
-            </h3>
-            <p className="text-gray-300 mb-6">
-              Computer Science Developer passionate about creating innovative
-              digital solutions that bridge technology and user experience.
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Column 1: Logo and About */}
+          <div>
+            <h3 className="text-2xl font-bold mb-4 text-blue-400">Amara B.</h3>
+            <p className="text-gray-400 mb-6">
+              Passionate full-stack developer with expertise in creating
+              scalable web applications and innovative solutions.
             </p>
             <div className="flex space-x-4">
-              {socialLinks.map((social) => (
+              {socialLinks.map((link) => (
                 <a
-                  key={social.label}
-                  href={social.href}
+                  key={link.label}
+                  href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-blue-400 transition duration-300"
-                  aria-label={social.label}
+                  aria-label={link.label}
+                  className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
                 >
-                  <social.icon className="w-6 h-6" />
+                  <link.icon size={20} />
                 </a>
               ))}
             </div>
-          </motion.div>
+          </div>
 
-          {/* Quick Links Column */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <h3 className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600">
-              Quick Links
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
+          {/* Column 2: Quick Links */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
+            <ul className="space-y-2">
               {quickLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-gray-300 hover:text-blue-400 transition duration-300"
-                >
-                  {link.label}
-                </Link>
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-400 hover:text-blue-400 transition-colors duration-300 flex items-center"
+                  >
+                    <Send size={14} className="mr-2" />
+                    {link.label}
+                  </Link>
+                </li>
               ))}
-            </div>
-          </motion.div>
+            </ul>
+          </div>
 
-          {/* Contact Column */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <h3 className="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600">
-              Contact Info
-            </h3>
-            <div className="space-y-4">
-              <div className="flex items-center text-gray-300">
-                <Send className="w-5 h-5 mr-3 text-blue-400" />
-                <span>Amaraabokhbat@gmail.com</span>
-              </div>
-              <div className="flex items-center text-gray-300">
-                <Phone className="w-5 h-5 mr-3 text-blue-400" />
-                <span>+976 96068185</span>
-              </div>
-              <div className="flex items-center text-gray-300">
-                <MapPin className="w-5 h-5 mr-3 text-blue-400" />
-                <span>Mongolia, UB</span>
-              </div>
-            </div>
-          </motion.div>
+          {/* Column 3: Contact Info */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Contact Info</h3>
+            <ul className="space-y-3">
+              <li className="flex items-start">
+                <MapPin size={18} className="text-blue-400 mt-1 mr-3" />
+                <span className="text-gray-400">Minia, Egypt</span>
+              </li>
+              <li className="flex items-start">
+                <Mail size={18} className="text-blue-400 mt-1 mr-3" />
+                <a
+                  href="mailto:amaraabokhbat@gmail.com"
+                  className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                >
+                  amaraabokhbat@gmail.com
+                </a>
+              </li>
+              <li className="flex items-start">
+                <Phone size={18} className="text-blue-400 mt-1 mr-3" />
+                <a
+                  href="tel:+201234567890"
+                  className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                >
+                  +20 123 456 7890
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        {/* Copyright */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400"
-        >
-          © {new Date().getFullYear()} Amara. All Rights Reserved.
-          <p className="text-sm mt-2">
-            Designed and Developed with ❤️ by Amara
+        {/* Copyright Bar */}
+        <div className="border-t border-gray-800 mt-12 pt-6 text-center">
+          <p className="text-gray-500 text-sm">
+            © {new Date().getFullYear()} Amara B. All rights reserved.
           </p>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );
-};
+}

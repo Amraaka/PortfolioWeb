@@ -8,8 +8,15 @@ import {
   Cloud,
   Brain,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export const SkillsSection = () => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const skillCategories = [
     {
       icon: Code,
@@ -91,30 +98,32 @@ export const SkillsSection = () => {
       className="bg-gray-900 text-white py-20 px-4 relative overflow-hidden"
     >
       {/* Subtle Background Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(30)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-blue-500 opacity-10"
-            initial={{
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              width: Math.random() * 15 + 5,
-              height: Math.random() * 15 + 5,
-            }}
-            animate={{
-              y: [0, Math.random() * 100 - 50],
-              x: [0, Math.random() * 100 - 50],
-              rotate: [0, 360],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 5,
-              repeat: Infinity,
-              repeatType: "reverse",
-            }}
-          />
-        ))}
-      </div>
+      {isClient && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(30)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-blue-500 opacity-10"
+              initial={{
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                width: Math.random() * 15 + 5,
+                height: Math.random() * 15 + 5,
+              }}
+              animate={{
+                y: [0, Math.random() * 100 - 50],
+                x: [0, Math.random() * 100 - 50],
+                rotate: [0, 360],
+              }}
+              transition={{
+                duration: Math.random() * 10 + 5,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="max-w-6xl mx-auto relative z-10">
         <motion.h2

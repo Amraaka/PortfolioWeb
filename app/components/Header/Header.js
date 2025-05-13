@@ -17,15 +17,17 @@ export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+  // Only run on client side
+  if (typeof window === 'undefined') return;
 
-    window.addEventListener('scroll', handleScroll);
-    // Set initial scroll state in case page loads scrolled down
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const handleScroll = () => {
+    setIsScrolled(window.scrollY > 50);
+  };
+
+  window.addEventListener('scroll', handleScroll);
+  handleScroll();
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
 
   const navItems = [
     {
@@ -180,3 +182,5 @@ export const Header = () => {
     </motion.header>
   );
 };
+
+export default Header;

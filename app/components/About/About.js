@@ -1,14 +1,20 @@
 "use client";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
-  UserCircleIcon,
   CodeBracketSquareIcon,
   AcademicCapIcon,
   CpuChipIcon,
   LightBulbIcon,
 } from "@heroicons/react/24/solid";
 
-export const AboutSection = () => {
+export default function AboutSection() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const sectionVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -49,8 +55,8 @@ export const AboutSection = () => {
     },
     hover: {
       scale: 1.03,
-      boxShadow: "0px 0px 25px -5px rgba(0, 150, 255, 0.3)", // Blueish glow
-      borderColor: "rgba(0, 150, 255, 0.7)", // Accent border on hover
+      boxShadow: "0px 0px 25px -5px rgba(0, 150, 255, 0.3)",
+      borderColor: "rgba(0, 150, 255, 0.7)",
       transition: {
         duration: 0.3,
         type: "spring",
@@ -102,22 +108,40 @@ export const AboutSection = () => {
     "Agile Methodologies",
   ];
 
-  const backgroundChars = Array.from({ length: 40 }).map((_, i) => ({
-    id: i,
-    char:
-      Math.random() > 0.5
-        ? Math.random() > 0.5
-          ? "{"
-          : "}"
-        : Math.random() > 0.5
-        ? "0"
-        : "1",
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    duration: Math.random() * 15 + 10,
-    delay: Math.random() * 5,
-    fontSize: Math.random() * 8 + 8,
-  }));
+  // Generate background characters - moved into useEffect to avoid hydration issues
+  const [backgroundChars, setBackgroundChars] = useState([]);
+  
+  useEffect(() => {
+    const chars = Array.from({ length: 40 }).map((_, i) => ({
+      id: i,
+      char: Math.random() > 0.5 ? (Math.random() > 0.5 ? "{" : "}") : (Math.random() > 0.5 ? "0" : "1"),
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      duration: Math.random() * 15 + 10,
+      delay: Math.random() * 5,
+      fontSize: Math.random() * 8 + 8,
+    }));
+    setBackgroundChars(chars);
+  }, []);
+
+  // Don't render animations until client-side to prevent hydration mismatch
+  if (!mounted) {
+    return (
+      <section 
+        id="about"
+        className="bg-gray-900 text-white py-20 md:py-28 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
+      >
+        <div className="max-w-6xl mx-auto relative z-10">
+          {/* Simple loading or static version */}
+          <div className="text-center mb-16 md:mb-20">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-500 font-mono">
+              About Me
+            </h2>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <motion.section
@@ -132,7 +156,7 @@ export const AboutSection = () => {
         {backgroundChars.map((item) => (
           <motion.span
             key={item.id}
-            className="absolute text-blue-500/20 font-mono" // Changed to blue
+            className="absolute text-blue-500/20 font-mono"
             style={{
               left: `${item.x}vw`,
               top: `${item.y}vh`,
@@ -164,15 +188,14 @@ export const AboutSection = () => {
           className="text-center mb-16 md:mb-20"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-500 font-mono">
-            {" "}
-            // Changed to blue gradient // About Me
+            About Me
           </h2>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             A dedicated Computer Science professional from{" "}
             <strong className="text-blue-400">
               Minia University of Science and Technology (MUST)
             </strong>
-            , // Changed to blue I specialize in architecting and deploying
+            , I specialize in architecting and deploying
             robust, scalable digital solutions. My passion lies in transforming
             complex problems into elegant user experiences through clean code
             and innovative technology.
@@ -193,8 +216,7 @@ export const AboutSection = () => {
               viewport={{ once: true, amount: 0.3 }}
               className="bg-slate-800/70 backdrop-blur-sm p-6 rounded-lg border border-slate-700 transition-all duration-300 flex flex-col"
             >
-              <value.icon className="w-10 h-10 mb-5 text-blue-400" />{" "}
-              {/* Changed to blue */}
+              <value.icon className="w-10 h-10 mb-5 text-blue-400" />
               <h3 className="text-xl font-semibold mb-3 text-gray-100">
                 {value.title}
               </h3>
@@ -210,8 +232,7 @@ export const AboutSection = () => {
           className="bg-slate-800/70 backdrop-blur-sm rounded-lg p-6 md:p-8 shadow-2xl border border-slate-700"
         >
           <h3 className="text-2xl md:text-3xl font-bold mb-6 text-blue-400 font-mono">
-            {" "}
-            // Changed to blue &lt;MyTechnicalStack /&gt;
+            &lt;MyTechnicalStack /&gt;
           </h3>
           <div className="mb-6">
             <h4 className="font-semibold text-lg text-gray-200 mb-1">
@@ -234,9 +255,9 @@ export const AboutSection = () => {
               {keySkillsList.map((skill) => (
                 <motion.span
                   key={skill}
-                  className="bg-gray-700/50 text-blue-300 px-3 py-1.5 rounded-md text-xs sm:text-sm font-mono border border-gray-600 cursor-default" // Changed to blue
+                  className="bg-gray-700/50 text-blue-300 px-3 py-1.5 rounded-md text-xs sm:text-sm font-mono border border-gray-600 cursor-default"
                   whileHover={{
-                    backgroundColor: "rgba(0, 150, 255, 0.1)", // blue with alpha
+                    backgroundColor: "rgba(0, 150, 255, 0.1)",
                     borderColor: "rgba(0, 150, 255, 0.5)",
                     scale: 1.05,
                     boxShadow: "0 0 8px rgba(0, 150, 255, 0.3)",
@@ -252,4 +273,4 @@ export const AboutSection = () => {
       </div>
     </motion.section>
   );
-};
+}

@@ -15,6 +15,7 @@ const getRandom = (min, max) => Math.random() * (max - min) + min;
 export const HeroSection = () => {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isHoveringButton, setIsHoveringButton] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const nameToType = "Amartuvshin";
   const [typedName, setTypedName] = useState("");
   const roles = [
@@ -25,18 +26,24 @@ export const HeroSection = () => {
   ];
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Typing effect for the name
   useEffect(() => {
     if (typedName.length < nameToType.length) {
       const timeoutId = setTimeout(() => {
         setTypedName(nameToType.slice(0, typedName.length + 1));
-      }, 150); // Adjust typing speed
+      }, 150);
       return () => clearTimeout(timeoutId);
     }
   }, [typedName, nameToType]);
 
   // Mouse move and role cycling
   useEffect(() => {
+    if (!isClient) return;
+
     const handleMouseMove = (e) => {
       setCursorPosition({ x: e.clientX, y: e.clientY });
     };
@@ -44,20 +51,20 @@ export const HeroSection = () => {
 
     const roleInterval = setInterval(() => {
       setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
-    }, 3000); // Role change interval
+    }, 3000);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       clearInterval(roleInterval);
     };
-  }, [roles.length]);
+  }, [roles.length, isClient]);
 
   const cursorVariants = {
     default: {
-      x: cursorPosition.x - 12, // Slightly smaller cursor
+      x: cursorPosition.x - 12,
       y: cursorPosition.y - 12,
       scale: 1,
-      backgroundColor: "rgba(0, 150, 255, 0.3)", // Blue color
+      backgroundColor: "rgba(0, 150, 255, 0.3)",
       border: "1px solid rgba(0, 100, 255, 0.7)",
       transition: { type: "spring", stiffness: 500, damping: 30 },
     },
@@ -70,11 +77,10 @@ export const HeroSection = () => {
       transition: { type: "spring", stiffness: 300, damping: 20 },
     },
     textHover: {
-      // For hovering over text, a subtle underline or different shape
       x: cursorPosition.x - 2,
-      y: cursorPosition.y + 10, // Position it like an I-beam or underline
+      y: cursorPosition.y + 10,
       scale: 1,
-      width: "2px", // I-beam like
+      width: "2px",
       height: "20px",
       backgroundColor: "rgba(0, 150, 255, 0.8)",
       border: "none",
@@ -83,23 +89,35 @@ export const HeroSection = () => {
     },
   };
 
-  // Memoize background particles to prevent re-computation on every render
   const backgroundChars = useMemo(() => {
     const chars = "01{}<>/;()*&^%$#@![]?|";
+    const width = isClient ? window.innerWidth : 1000;
+    const height = isClient ? window.innerHeight : 800;
+    
     return [...Array(60)].map((_, i) => ({
-      // Increased count for denser feel
       id: i,
       char: chars[Math.floor(Math.random() * chars.length)],
-      initialX: getRandom(
-        0,
-        typeof window !== "undefined" ? window.innerWidth : 1000
-      ),
-      initialY: getRandom(-200, -50), // Start off-screen top
-      size: getRandom(10, 20), // Font size
-      duration: getRandom(10, 20), // Fall duration
-      delay: getRandom(0, 5), // Staggered start
+      initialX: getRandom(0, width),
+      initialY: getRandom(-200, -50),
+      size: getRandom(10, 20),
+      duration: getRandom(10, 20),
+      delay: getRandom(0, 5),
+      targetY: height + 50,
     }));
-  }, []);
+  }, [isClient]);
+
+  if (!isClient) {
+    return (
+      <div className="relative min-h-screen bg-gray-900 text-white flex items-center justify-center overflow-hidden">
+        {/* Placeholder content that will be replaced when hydrated */}
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+            {/* Content will load here */}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-gray-900 text-white flex items-center justify-center overflow-hidden cursor-none">
@@ -108,14 +126,14 @@ export const HeroSection = () => {
         {backgroundChars.map((item) => (
           <motion.span
             key={item.id}
-            className="absolute text-blue-500 opacity-20 font-mono" // Changed to blue
+            className="absolute text-blue-500 opacity-20 font-mono"
             style={{ fontSize: `${item.size}px` }}
             initial={{
               x: item.initialX,
               y: item.initialY,
             }}
             animate={{
-              y: typeof window !== "undefined" ? window.innerHeight + 50 : 800, // Fall to bottom
+              y: item.targetY,
             }}
             transition={{
               duration: item.duration,
@@ -148,9 +166,8 @@ export const HeroSection = () => {
             className="relative z-10 lg:w-1/2 flex justify-center"
           >
             <div className="relative w-74 h-[380px] md:w-80 md:h-96 lg:w-96 lg:h-[520px] rounded-sm overflow-hidden border-4 border-blue-500 shadow-lg shadow-blue-500/30">
-              {/* Replace with your actual image */}
               <Image
-                src="/Img/Profile.jpg" // Update this path to your image
+                src="/Img/Profile.jpg"
                 alt="Amartuvshin"
                 layout="fill"
                 objectFit="cover"
@@ -165,21 +182,19 @@ export const HeroSection = () => {
             transition={{ duration: 0.8 }}
             className="relative z-10 lg:w-1/2"
           >
-            <motion.h1
-              className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600 font-mono" // Changed to blue gradient
-            >
+            <motion.h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-600 font-mono">
               {typedName}
-              <motion.span // Blinking cursor for name typing
+              <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 1, 0] }}
                 transition={{ duration: 0.7, repeat: Infinity, ease: "linear" }}
-                className="inline-block w-1 h-12 md:h-16 ml-1 bg-blue-400" // Changed to blue
+                className="inline-block w-1 h-12 md:h-16 ml-1 bg-blue-400"
                 style={{
                   visibility:
                     typedName.length === nameToType.length
                       ? "visible"
                       : "hidden",
-                }} // Show only when typing done
+                }}
               ></motion.span>
             </motion.h1>
 
@@ -194,7 +209,7 @@ export const HeroSection = () => {
                   className="absolute inset-0 flex items-center justify-start"
                 >
                   <span>{`> ${roles[currentRoleIndex]}`}</span>
-                  <motion.span // Blinking cursor for roles
+                  <motion.span
                     initial={{ opacity: 0 }}
                     animate={{ opacity: [0, 1, 0] }}
                     transition={{
@@ -203,7 +218,7 @@ export const HeroSection = () => {
                       ease: "linear",
                       delay: 0.2,
                     }}
-                    className="ml-2 w-0.5 h-6 bg-blue-400" // Changed to blue
+                    className="ml-2 w-0.5 h-6 bg-blue-400"
                   ></motion.span>
                 </motion.div>
               </AnimatePresence>
