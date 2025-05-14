@@ -142,7 +142,7 @@ export default function BadraaFoundation() {
           <div className="inline-flex items-center justify-center bg-gray-800 px-4 py-2 rounded-lg border border-gray-700">
             <AcademicCapIcon className="w-5 h-5 mr-2 text-blue-400" />
             <span className="text-sm md:text-base">
-              2nd Place Winner - "Мэдээлэл, Холбооны салбарын хөгжилд бидний гүйцэтгэх үүрэг-2025"
+              2nd Place Winner - "Мэдээлэл, Холбооны салбарын хөгжилд бидний гүйцэтгэх үүрэг-2025 "
             </span>
           </div>
         </motion.div>
