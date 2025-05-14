@@ -20,9 +20,9 @@ export const HeroSection = () => {
   const [typedName, setTypedName] = useState("");
   const roles = [
     "Computer Science Student",
-    "Full Stack Web Developer",
+    "Web Developer",
     "Mobile App Enthusiast",
-    "Innovation Driven Programmer",
+    "Ready for challenges"
   ];
   const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
 
@@ -39,7 +39,6 @@ export const HeroSection = () => {
     }
   }, [typedName, nameToType]);
 
-  // Mouse move and role cycling
   useEffect(() => {
     if (!isClient) return;
 
@@ -105,7 +104,6 @@ export const HeroSection = () => {
     }));
   }, [isClient]);
 
-  // Hide cursor on touch devices
   const isTouchDevice = isClient && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
   if (!isClient) {

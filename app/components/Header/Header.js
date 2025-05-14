@@ -1,186 +1,154 @@
 "use client";
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Menu,
-  X,
-  Home,
-  User,
-  Briefcase,
-  Code,
-  Send
-} from 'lucide-react';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { FiCode, FiMenu, FiX } from "react-icons/fi";
 
 export const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-  // Only run on client side
-  if (typeof window === 'undefined') return;
+    setMounted(true);
 
-  const handleScroll = () => {
-    setIsScrolled(window.scrollY > 50);
-  };
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
 
-  window.addEventListener('scroll', handleScroll);
-  handleScroll();
-  return () => window.removeEventListener('scroll', handleScroll);
-}, []);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [scrolled]);
 
   const navItems = [
-    {
-      href: "#home", // Assuming your Hero section has an id="home"
-      label: "Home",
-      icon: Home
-    },
-    {
-      href: "#about",
-      label: "About",
-      icon: User
-    },
-    {
-      href: "#skills",
-      label: "Skills",
-      icon: Code
-    },
-    {
-      href: "#projects",
-      label: "Projects",
-      icon: Briefcase
-    },
-    {
-      href: "#contact",
-      label: "Contact",
-      icon: Send
-    }
+    { name: "Home", href: "#" },
+    { name: "About", href: "#about" },
+    { name: "Projects", href: "#projects" },
+    { name: "Skills", href: "#skills" },
+    { name: "Contact", href: "#contact" },
   ];
 
-  const menuVariants = {
-    hidden: {
-      opacity: 0,
-      x: "100%",
-      transition: {
-        duration: 0.3,
-        ease: "easeInOut"
-      }
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeInOut"
-      }
-    }
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Consistent green accent color from the Hero section
-  const accentColor = "green-400"; // e.g., text-green-400, hover:text-green-400
-  const hoverAccentColor = "cyan-400"; // A slightly different shade for hover if desired, or use the same
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
+  if (!mounted) return null;
 
   return (
     <motion.header
-      initial={{ opacity: 0, y: -60 }} // Start slightly higher
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }} // Added a slight delay to animate after hero content potentially
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${ // z-40 to be below custom cursor if it's z-50
-        isScrolled
-          ? "bg-gray-900/80 backdrop-blur-md shadow-lg border-b border-gray-700/50" // Added subtle border
-          : "bg-transparent"
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-gray-900/90 backdrop-blur-md border-b border-blue-900/30 py-2"
+          : "bg-transparent py-4"
       }`}
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        {/* Logo - Matching Hero Section Name Gradient */}
-        <Link
-          href="#home" // Link to the top of the page or hero section
-          className={`text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-${accentColor} via-cyan-500 to-blue-500 hover:opacity-80 transition-opacity duration-300 font-mono`}
+      <div className="container mx-auto px-4 flex justify-between items-center">
+        <motion.div
+          className="flex items-center"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
         >
-          Amara&lt;/&gt; {/* Added a little coding touch to the logo text */}
-        </Link>
+          <Link href="#" className="flex items-center space-x-2">
+            <FiCode className="text-blue-500 text-2xl" />
+            <span className="text-lg md:text-xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-500 to-blue-500">
+              Amara
+            </span>
+          </Link>
+        </motion.div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-5 lg:space-x-7 items-center">
+        <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
           {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`group flex items-center text-gray-300 hover:text-${hoverAccentColor} transition-colors duration-300 px-2 py-1 rounded-md text-sm font-medium`}
-              onClick={(e) => { // Smooth scroll for hash links
-                if (item.href.startsWith("#")) {
-                  e.preventDefault();
-                  document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
+            <motion.div
+              key={item.name}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <item.icon
-                className={`w-4 h-4 mr-2 text-gray-500 group-hover:text-${hoverAccentColor} transition-colors duration-300`}
-              />
-              {item.label}
-            </Link>
+              <Link
+                href={item.href}
+                className="px-3 lg:px-4 py-2 text-gray-300 hover:text-blue-400 transition-colors duration-300 text-sm lg:text-base font-medium relative group"
+              >
+                {item.name}
+                <motion.span
+                  className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"
+                  initial={{ width: 0 }}
+                  whileHover={{ width: "100%" }}
+                ></motion.span>
+              </Link>
+            </motion.div>
           ))}
+          <motion.a
+            href="#contact"
+            className="ml-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-300 text-sm lg:text-base font-medium"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Get In Touch
+          </motion.a>
         </nav>
 
-        {/* Mobile Menu Toggle */}
+        {/* Mobile Menu Button */}
         <div className="md:hidden">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-            className={`p-2 rounded-md text-gray-300 hover:text-${hoverAccentColor} focus:outline-none focus:ring-2 focus:ring-inset focus:ring-${accentColor} transition-colors duration-300`}
+          <motion.button
+            onClick={toggleMobileMenu}
+            className="text-gray-300 hover:text-blue-400 transition-colors duration-300"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
-            {isMenuOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
+            {mobileMenuOpen ? (
+              <FiX className="text-2xl" />
+            ) : (
+              <FiMenu className="text-2xl" />
+            )}
+          </motion.button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            variants={menuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className="fixed inset-0 bg-gray-950/95 backdrop-blur-sm z-50 md:hidden" // Slightly darker, more opaque for better readability
-            onClick={() => setIsMenuOpen(false)} // Close on background click
-          >
-            <motion.div
-              className="flex flex-col items-center justify-center h-full space-y-6 pt-16" // Added padding top
-              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the menu content
-            >
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={(e) => {
-                    if (item.href.startsWith("#")) {
-                      e.preventDefault();
-                      document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
-                    }
-                    setIsMenuOpen(false); // Close menu on item click
-                  }}
-                  className={`group flex items-center text-xl text-gray-200 hover:text-${hoverAccentColor} transition-colors duration-300 py-3 px-4 rounded-lg w-3/4 justify-center`}
-                >
-                  <item.icon
-                    className={`w-6 h-6 mr-3 text-gray-400 group-hover:text-${hoverAccentColor} transition-colors duration-300`}
-                  />
-                  {item.label}
-                </Link>
-              ))}
-              <button // Explicit close button inside mobile menu
-                onClick={() => setIsMenuOpen(false)}
-                aria-label="Close menu"
-                className={`absolute top-5 right-5 p-2 rounded-md text-gray-300 hover:text-${hoverAccentColor} focus:outline-none`}
+      {/* Mobile Navigation Menu */}
+      <motion.div
+        className={`md:hidden absolute w-full bg-gray-800/95 backdrop-blur-md border-b border-blue-900/30 ${
+          mobileMenuOpen ? "block" : "hidden"
+        }`}
+        initial={{ opacity: 0, height: 0 }}
+        animate={{
+          opacity: mobileMenuOpen ? 1 : 0,
+          height: mobileMenuOpen ? "auto" : 0,
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="container mx-auto px-4 py-4">
+          <nav className="flex flex-col space-y-3">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="px-3 py-2 text-gray-300 hover:text-blue-400 transition-colors duration-300 border-l-2 border-transparent hover:border-blue-500"
+                onClick={closeMobileMenu}
               >
-                <X size={28} />
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                {item.name}
+              </Link>
+            ))}
+            <motion.a
+              href="#contact"
+              className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors duration-300 text-center"
+              whileTap={{ scale: 0.95 }}
+              onClick={closeMobileMenu}
+            >
+              Get In Touch
+            </motion.a>
+          </nav>
+        </div>
+      </motion.div>
     </motion.header>
   );
 };
-
-export default Header;

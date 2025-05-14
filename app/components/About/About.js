@@ -66,50 +66,57 @@ export default function AboutSection() {
     },
   };
 
-  const coreValuesData = [
-    {
-      icon: LightBulbIcon,
-      title: "Innovative Drive",
-      description:
-        "Driven by a passion for innovation, I continuously explore emerging technologies to engineer impactful and future-forward solutions.",
-    },
-    {
-      icon: CodeBracketSquareIcon,
-      title: "Full-Spectrum Development",
-      description:
-        "Expertise in architecting robust, scalable full-stack applications, from intuitive front-end interfaces to efficient back-end systems.",
-    },
-    {
-      icon: AcademicCapIcon,
-      title: "Scholarly Foundation",
-      description:
-        "Solid Computer Science grounding from Mongolian University of Science and Technology, specializing in modern software engineering principles.",
-    },
-    {
-      icon: CpuChipIcon,
-      title: "Strategic Problem-Solving",
-      description:
-        "Adept at dissecting complex challenges, devising algorithmic strategies, and implementing elegant, high-performance code.",
-    },
-  ];
+  // const coreValuesData = [
+  //   {
+  //     icon: LightBulbIcon,
+  //     title: "Innovative Drive",
+  //     description:
+  //       "Driven by a passion for innovation, I continuously explore emerging technologies to engineer impactful and future-forward solutions.",
+  //   },
+  //   {
+  //     icon: CodeBracketSquareIcon,
+  //     title: "Full-Spectrum Development",
+  //     description:
+  //       "Expertise in architecting robust, scalable full-stack applications, from intuitive front-end interfaces to efficient back-end systems.",
+  //   },
+  //   {
+  //     icon: AcademicCapIcon,
+  //     title: "Scholarly Foundation",
+  //     description:
+  //       "Solid Computer Science grounding from Mongolian University of Science and Technology, specializing in modern software engineering principles.",
+  //   },
+  //   {
+  //     icon: CpuChipIcon,
+  //     title: "Strategic Problem-Solving",
+  //     description:
+  //       "Adept at dissecting complex challenges, devising algorithmic strategies, and implementing elegant, high-performance code.",
+  //   },
+  // ];
 
   const keySkillsList = [
     "JavaScript (ES6+)",
+    "Java",
+    "Python",
     "TypeScript",
     "React | Next.js",
     "Node.js | Express",
     "RESTful APIs",
     "MongoDB | PostgreSQL",
-    "Git | CI/CD",
-    "Agile Methodologies",
   ];
 
   const [backgroundChars, setBackgroundChars] = useState([]);
-  
+
   useEffect(() => {
     const chars = Array.from({ length: 40 }).map((_, i) => ({
       id: i,
-      char: Math.random() > 0.5 ? (Math.random() > 0.5 ? "{" : "}") : (Math.random() > 0.5 ? "0" : "1"),
+      char:
+        Math.random() > 0.5
+          ? Math.random() > 0.5
+            ? "{"
+            : "}"
+          : Math.random() > 0.5
+          ? "0"
+          : "1",
       x: Math.random() * 100,
       y: Math.random() * 100,
       duration: Math.random() * 15 + 10,
@@ -121,7 +128,7 @@ export default function AboutSection() {
 
   if (!mounted) {
     return (
-      <section 
+      <section
         id="about"
         className="bg-gray-900 text-white py-20 md:py-28 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
       >
@@ -184,18 +191,18 @@ export default function AboutSection() {
             About Me
           </h2>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            A dedicated Computer Science professional from{" "}
+            I'm a Computer Science student at{" "}
             <strong className="text-blue-400">
               Mongolian University of Science and Technology (MUST)
             </strong>
-            , I specialize in architecting and deploying
-            robust, scalable digital solutions. My passion lies in transforming
-            complex problems into elegant user experiences through clean code
-            and innovative technology.
+            , with a strong interest in developing web and mobile applications
+            that aim to address real-world challenges. I enjoy learning and
+            building practical, user-friendly solutions through thoughtful
+            design and reliable code.
           </p>
         </motion.div>
 
-        <motion.div
+        {/* <motion.div
           variants={itemVariants}
           className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-16 md:mb-20"
         >
@@ -218,7 +225,7 @@ export default function AboutSection() {
               </p>
             </motion.div>
           ))}
-        </motion.div>
+        </motion.div> */}
 
         <motion.div
           variants={itemVariants}

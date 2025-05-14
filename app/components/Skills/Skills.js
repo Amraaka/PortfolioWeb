@@ -22,7 +22,7 @@ export const SkillsSection = () => {
       icon: Code,
       title: "Frontend Development",
       skills: [
-        { name: "React", level: 90 },
+        { name: "React", level: 70 },
         { name: "Next.js", level: 85 },
         { name: "TypeScript", level: 80 },
         { name: "Tailwind CSS", level: 85 },
@@ -50,37 +50,6 @@ export const SkillsSection = () => {
         { name: "SQL", level: 75 },
       ],
       color: "from-green-500 to-green-700",
-    },
-    {
-      icon: Cloud,
-      title: "Cloud & DevOps",
-      skills: [
-        { name: "AWS", level: 70 },
-        { name: "Git", level: 85 },
-      ],
-      color: "from-red-500 to-red-700",
-    },
-    {
-      icon: Wrench,
-      title: "Development Tools",
-      skills: [
-        { name: "VS Code", level: 90 },
-        { name: "Figma", level: 75 },
-        { name: "Postman", level: 80 },
-      ],
-      color: "from-orange-500 to-orange-700",
-    },
-    {
-      icon: Brain,
-      title: "Soft Skills & Methodologies",
-      skills: [
-        { name: "Agile", level: 85 },
-        { name: "Problem Solving", level: 90 },
-        { name: "Team Collaboration", level: 85 },
-        { name: "Communication", level: 80 },
-        { name: "Quick Learning", level: 90 },
-      ],
-      color: "from-teal-500 to-teal-700",
     },
   ];
 

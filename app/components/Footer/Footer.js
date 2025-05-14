@@ -188,6 +188,15 @@ export default function Footer() {
                   +976 96068185
                 </a>
               </li>
+              <li className="flex items-start">
+                <Github size={18} className="text-blue-400 mt-1 mr-3" />
+                <a
+                  href="tel:+201234567890"
+                  className="text-gray-400 hover:text-blue-400 transition-colors duration-300"
+                >
+                  github.com/Amraaka
+                </a>
+              </li>
             </ul>
           </div>
         </div>
